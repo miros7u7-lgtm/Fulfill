@@ -1,0 +1,36 @@
+serverFiles:
+  alerting_rules.yml:
+    groups:
+      - name: fulfill-alertas
+        interval: 15s
+        rules:
+          - alert: FulfillDeploymentSinReplicas
+            expr: |
+              kube_deployment_status_replicas_available{
+                namespace="monitoring",
+                deployment="fulfill-prueba-alerta"
+              } == 0
+            for: 30s
+            labels:
+              severity: warning
+              proyecto: fulfill
+              tipo: prueba
+            annotations:
+              summary: "Deployment de prueba sin replicas"
+              description: "No hay replicas disponibles."
+
+          - alert: FulfillPodNoDisponible
+            expr: |
+              kube_pod_container_status_waiting_reason{
+                namespace="monitoring",
+                pod="fulfill-prueba-imagen",
+                reason=~"ErrImagePull|ImagePullBackOff"
+              } == 1
+            for: 30s
+            labels:
+              severity: warning
+              proyecto: fulfill
+              tipo: prueba
+            annotations:
+              summary: "Pod de prueba con error de imagen"
+              description: "Kubernetes no pudo descargar la imagen."

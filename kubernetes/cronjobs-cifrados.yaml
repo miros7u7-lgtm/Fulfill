@@ -1,0 +1,228 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: backup-postgres
+  namespace: fulfill
+spec:
+  schedule: "0 2 * * *"
+  timeZone: America/Mexico_City
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 600
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      activeDeadlineSeconds: 600
+      template:
+        metadata:
+          labels:
+            app: backup-postgres
+        spec:
+          restartPolicy: Never
+          automountServiceAccountToken: false
+          containers:
+            - name: backup-postgres
+              image: docker.io/library/fulfill-backup-postgres:1.0
+              imagePullPolicy: Never
+              command:
+                - /bin/bash
+                - -euo
+                - pipefail
+                - -c
+                - |
+                  umask 077
+                  FECHA=$(date -u +%Y%m%dT%H%M%SZ)
+                  BASE="/respaldos/postgres-${FECHA}.dump.age"
+                  TEMP="${BASE}.tmp"
+
+                  trap 'rm -f "$TEMP"' EXIT
+
+                  echo "Iniciando respaldo cifrado PostgreSQL"
+
+                  pg_dump \
+                    -h postgres \
+                    -p 5432 \
+                    -U "$PGUSER" \
+                    -d "$PGDATABASE" \
+                    -Fc \
+                    | age -R /claves/recipient.txt -o "$TEMP"
+
+                  test -s "$TEMP"
+                  mv "$TEMP" "$BASE"
+                  trap - EXIT
+
+                  cd /respaldos
+                  sha256sum "$(basename "$BASE")" \
+                    > "$(basename "$BASE").sha256"
+                  sha256sum -c "$(basename "$BASE").sha256"
+
+                  find /respaldos -type f \
+                    -name 'postgres-*.dump.age' \
+                    -mtime +6 -delete
+                  find /respaldos -type f \
+                    -name 'postgres-*.dump.age.sha256' \
+                    -mtime +6 -delete
+
+                  echo "RESPALDO POSTGRESQL CIFRADO: OK"
+                  ls -lh "$BASE"
+
+              env:
+                - name: PGUSER
+                  valueFrom:
+                    secretKeyRef:
+                      name: fulfill-secret
+                      key: DB_USER
+                - name: PGPASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: fulfill-secret
+                      key: DB_PASSWORD
+                - name: PGDATABASE
+                  valueFrom:
+                    configMapKeyRef:
+                      name: fulfill-config
+                      key: DB_NAME
+
+              resources:
+                requests:
+                  cpu: 50m
+                  memory: 64Mi
+                limits:
+                  cpu: 300m
+                  memory: 256Mi
+
+              volumeMounts:
+                - name: respaldos
+                  mountPath: /respaldos
+                - name: clave-publica
+                  mountPath: /claves
+                  readOnly: true
+
+          volumes:
+            - name: respaldos
+              persistentVolumeClaim:
+                claimName: respaldos-postgres-data
+            - name: clave-publica
+              configMap:
+                name: fulfill-backup-age
+
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: backup-mongo
+  namespace: fulfill
+spec:
+  schedule: "30 2 * * *"
+  timeZone: America/Mexico_City
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 600
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      activeDeadlineSeconds: 600
+      template:
+        metadata:
+          labels:
+            app: backup-mongo
+        spec:
+          restartPolicy: Never
+          automountServiceAccountToken: false
+
+          containers:
+            - name: backup-mongo
+              image: docker.io/library/fulfill-backup-mongo:1.0
+              imagePullPolicy: Never
+
+              command:
+                - /bin/bash
+                - -euo
+                - pipefail
+                - -c
+                - |
+                  umask 077
+                  FECHA=$(date -u +%Y%m%dT%H%M%SZ)
+                  BASE="/respaldos/mongo-${FECHA}.archive.gz.age"
+                  TEMP="${BASE}.tmp"
+                  CONFIG=$(mktemp /tmp/mongo-backup.XXXXXX)
+
+                  trap 'rm -f "$TEMP" "$CONFIG"' EXIT
+
+                  PASS=$(tr -d '\r\n' < /credenciales/password.txt)
+                  printf "password: '%s'\n" "$PASS" > "$CONFIG"
+                  unset PASS
+                  chmod 600 "$CONFIG"
+
+                  echo "Iniciando respaldo cifrado MongoDB"
+
+                  mongodump \
+                    --host mongo \
+                    --port 27017 \
+                    --username fulfill_backup \
+                    --authenticationDatabase admin \
+                    --config "$CONFIG" \
+                    --db fulfill_logs \
+                    --archive \
+                    --gzip \
+                    | age -R /claves/recipient.txt -o "$TEMP"
+
+                  test -s "$TEMP"
+                  mv "$TEMP" "$BASE"
+                  rm -f "$CONFIG"
+                  trap - EXIT
+
+                  cd /respaldos
+                  sha256sum "$(basename "$BASE")" \
+                    > "$(basename "$BASE").sha256"
+                  sha256sum -c "$(basename "$BASE").sha256"
+
+                  find /respaldos -type f \
+                    -name 'mongo-*.archive.gz.age' \
+                    -mtime +6 -delete
+                  find /respaldos -type f \
+                    -name 'mongo-*.archive.gz.age.sha256' \
+                    -mtime +6 -delete
+
+                  echo "RESPALDO MONGODB CIFRADO: OK"
+                  ls -lh "$BASE"
+
+              resources:
+                requests:
+                  cpu: 50m
+                  memory: 128Mi
+                limits:
+                  cpu: 300m
+                  memory: 512Mi
+
+              volumeMounts:
+                - name: respaldos
+                  mountPath: /respaldos
+                - name: clave-publica
+                  mountPath: /claves
+                  readOnly: true
+                - name: credenciales
+                  mountPath: /credenciales
+                  readOnly: true
+                - name: temporal
+                  mountPath: /tmp
+
+          volumes:
+            - name: respaldos
+              persistentVolumeClaim:
+                claimName: respaldos-mongo-data
+            - name: clave-publica
+              configMap:
+                name: fulfill-backup-age
+            - name: credenciales
+              secret:
+                secretName: fulfill-mongo-credentials
+                items:
+                  - key: MONGO_BACKUP_PASSWORD
+                    path: password.txt
+            - name: temporal
+              emptyDir:
+                medium: Memory
+                sizeLimit: 8Mi

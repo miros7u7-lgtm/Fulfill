@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: fulfill-ingress
+  namespace: fulfill
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - fulfill-dev.localhost
+      secretName: fulfill-tls
+  rules:
+    - host: fulfill-dev.localhost
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: fulfill-web
+                port:
+                  number: 5000

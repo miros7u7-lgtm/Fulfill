@@ -1,0 +1,90 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fulfill-web
+  namespace: fulfill
+
+spec:
+  replicas: 1
+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+
+  selector:
+    matchLabels:
+      app: fulfill-web
+
+  template:
+    metadata:
+      labels:
+        app: fulfill-web
+
+    spec:
+      serviceAccountName: fulfill-web-sa
+      automountServiceAccountToken: false
+
+      containers:
+        - name: fulfill-web
+          image: docker.io/library/fulfill-web:latest
+          imagePullPolicy: Never
+
+          ports:
+            - name: http
+              containerPort: 5000
+
+          envFrom:
+            - configMapRef:
+                name: fulfill-config
+            - secretRef:
+                name: fulfill-secret
+
+          env:
+            - name: MONGO_URI
+              valueFrom:
+                secretKeyRef:
+                  name: fulfill-mongo-uri
+                  key: MONGO_URI
+
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 300m
+              memory: 256Mi
+
+          readinessProbe:
+            httpGet:
+              path: /api/salud
+              port: 5000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+
+          livenessProbe:
+            httpGet:
+              path: /api/salud
+              port: 5000
+            initialDelaySeconds: 30
+            periodSeconds: 20
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fulfill-web
+  namespace: fulfill
+
+spec:
+  type: ClusterIP
+
+  selector:
+    app: fulfill-web
+
+  ports:
+    - name: http
+      protocol: TCP
+      port: 5000
+      targetPort: 5000

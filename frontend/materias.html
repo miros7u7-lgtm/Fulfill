@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Mis materias | Fulfill</title>
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="stylesheet" href="/styles.css">
+
+    <style>
+        .subjects-page {
+            max-width: 900px;
+            margin: 65px auto;
+        }
+
+        .subjects-card {
+            padding: 32px;
+            background: white;
+            border: 1px solid #e6eae3;
+            border-radius: 16px;
+            margin-bottom: 25px;
+        }
+
+        .subjects-card h2 {
+            margin-top: 0;
+            color: #1d2925;
+            font-size: 24px;
+        }
+
+        .subjects-card p {
+            color: #78817b;
+            font-size: 13px;
+        }
+
+        .subjects-form {
+            display: grid;
+            gap: 18px;
+        }
+
+        .subjects-form label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .subjects-form input,
+        .subjects-form textarea {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #dfe7dd;
+            border-radius: 9px;
+            background: #fbfcfa;
+            font: inherit;
+        }
+
+        .subjects-form button {
+            padding: 14px 22px;
+            color: white;
+            background: #376d57;
+            border: none;
+            border-radius: 9px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .subjects-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .subject-item {
+            padding: 18px;
+            background: #f0f5ed;
+            border-radius: 10px;
+        }
+
+        .subject-item h3 {
+            margin: 0 0 7px;
+            color: #376d57;
+        }
+
+        .subject-item p {
+            margin: 0;
+        }
+
+        @media (max-width: 650px) {
+            .subjects-page {
+                margin: 35px auto;
+            }
+
+            .subjects-card {
+                padding: 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page-shell">
+
+        <header class="site-header">
+
+            <a class="brand"
+               href="/"
+               aria-label="Fulfill, volver al inicio">
+
+                <span class="brand-mark" aria-hidden="true">
+                    <svg viewBox="0 0 32 32" fill="none">
+                        <path
+                            d="M8 16.5 13.2 22 24 10"
+                            stroke="currentColor"
+                            stroke-width="3"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        />
+                        <path
+                            d="M16 3.5a12.5 12.5 0 1 0 12.5 12.5"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                            stroke-linecap="round"
+                        />
+                    </svg>
+                </span>
+
+                <span>
+                    Fulfill<span class="brand-period">.</span>
+                </span>
+            </a>
+
+            <nav class="site-nav" aria-label="Navegación principal">
+
+                <a class="nav-link" href="/">
+                    Inicio
+                </a>
+
+                <a class="nav-link active" href="/materias.html">
+                    Mis materias
+                </a>
+
+                <a class="nav-link" href="/#actividades">
+                    Actividades
+                </a>
+
+            </nav>
+
+        <div id="usuario-sesion"
+            class="usuario-sesion"
+            aria-live="polite">
+            <span class="sesion-cargando">Cargando usuario...</span>
+        </div>
+        </header>
+
+        <main class="subjects-page">
+
+            <p class="eyebrow">
+                <span class="eyebrow-line"></span>
+                TU ESPACIO ACADÉMICO
+            </p>
+
+            <h1>Mis materias</h1>
+
+            <p>
+                Registra tus asignaturas y organiza tus
+                actividades de manera sencilla.
+            </p>
+
+            <section class="subjects-card">
+
+                <h2>Agregar nueva materia</h2>
+
+                <form id="form-materia" class="subjects-form">
+
+                    <div>
+                        <label for="nombre-materia">
+                            Nombre de la materia
+                        </label>
+
+                        <input
+                            type="text"
+                            id="nombre-materia"
+                            maxlength="100"
+                            placeholder="Ej. Programación Web"
+                            required
+                        >
+                    </div>
+
+                    <div>
+                        <label for="descripcion-materia">
+                            Descripción
+                        </label>
+
+                        <textarea
+                            id="descripcion-materia"
+                            rows="3"
+                            placeholder="Describe brevemente la asignatura"
+                        ></textarea>
+                    </div>
+
+                    <button type="submit" id="guardar-materia">
+                        Guardar materia
+                    </button>
+
+                    <p id="mensaje-materia" aria-live="polite"></p>
+
+                </form>
+            </section>
+
+            <section class="subjects-card">
+
+                <h2>Materias registradas</h2>
+
+                <div id="lista-materias" class="subjects-list">
+                    <p>Cargando materias...</p>
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <script src="/materias.js"></script>
+    <script src="/sesion.js" defer></script>
+</body>
+</html>

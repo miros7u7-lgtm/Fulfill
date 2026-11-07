@@ -1,0 +1,41 @@
+FULFILL - RESTAURACION DESDE RESPALDOS CIFRADOS
+
+Fecha: 05/11/2026
+
+ORIGEN
+Respaldos generados por CronJobs de Kubernetes.
+Cifrado mediante age.
+Namespace original: fulfill
+
+DESTINO
+Namespace: fulfill-recuperacion
+Instancias independientes con volumenes propios.
+
+POSTGRESQL
+Base: fulfill_restore_age
+Resultado: 0
+Duracion del comando: 1 segundo
+Usuarios restaurados: 4
+Materias restauradas: 6
+Actividades restauradas: 6
+
+MONGODB
+Base: fulfill_logs_age_restore
+Resultado: 0
+Duracion del comando: 4 segundos
+Documentos restaurados: 1
+Documentos fallidos: 0
+
+VERIFICACIONES
+- Descifrado de ambos respaldos correcto.
+- Restauracion de PostgreSQL completada.
+- Restauracion de MongoDB completada.
+- Datos recuperados y conteos comprobados.
+- Bases originales sin modificaciones por la prueba.
+- Pod temporal de exportacion eliminado.
+
+PENDIENTES
+- Copia cifrada fuera del equipo.
+- Prueba de retencion automatica.
+- Medicion completa de RPO y RTO.
+- Verificacion funcional integral tras recuperacion.

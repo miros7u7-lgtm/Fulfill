@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f7f8f5">
+    <meta name="description"
+          content="Fulfill: organiza tus materias y actividades académicas.">
+
+    <title>Fulfill — Tu vida académica, en orden</title>
+
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="stylesheet" href="/styles.css">
+
+</head>
+
+<body>
+<div class="page-shell">
+
+    <header class="site-header">
+        <a class="brand" href="#inicio" aria-label="Fulfill, inicio">
+            <span class="brand-mark" aria-hidden="true">
+                <svg viewBox="0 0 32 32" fill="none">
+                    <path d="M8 16.5 13.2 22 24 10"
+                          stroke="currentColor" stroke-width="3"
+                          stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M16 3.5a12.5 12.5 0 1 0 12.5 12.5"
+                          stroke="currentColor" stroke-width="2.5"
+                          stroke-linecap="round"/>
+                </svg>
+            </span>
+            <span>Fulfill<span class="brand-period">.</span></span>
+        </a>
+
+        <nav class="site-nav" aria-label="Navegación principal">
+            <a class="nav-link active" href="#inicio">Inicio</a>
+            <a class="nav-link" href="/materias.html">Mis materias</a>
+            <a class="nav-link" href="#actividades">Actividades</a>
+            <a
+                href="/admin.html"
+                id="enlace-administracion"
+                class="nav-link"
+                hidden
+            >
+                Panel administrativo
+            </a>
+        </nav>
+
+        <a class="header-link" href="#conexion">
+            <span class="header-link-dot" aria-hidden="true"></span>
+            Estado del sistema
+        </a>
+
+        <div id="usuario-sesion"
+            class="usuario-sesion"
+            aria-live="polite">
+            <span class="sesion-cargando">Cargando usuario...</span>
+        </div>
+
+    </header>
+
+    <main>
+
+        <section class="hero" id="inicio" aria-labelledby="hero-title">
+
+            <div class="hero-copy">
+                <p class="eyebrow">
+                    <span class="eyebrow-line"></span>
+                    TU ESPACIO ACADÉMICO
+                </p>
+
+                <h1 id="hero-title">
+                    Un semestre<br>
+                    más <span>en orden.</span>
+                </h1>
+
+                <p class="hero-description">
+                    Todo lo que necesitas para organizar tus materias,
+                    actividades y progreso, en un solo lugar.
+                </p>
+
+                <div class="hero-actions">
+                    <a class="primary-link" href="#actividades">
+                        Ver mis actividades
+                        <svg viewBox="0 0 20 20" fill="none"
+                             aria-hidden="true">
+                            <path d="M4 10h12m-5-5 5 5-5 5"
+                                  stroke="currentColor" stroke-width="1.8"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+
+                    <span class="hero-note">
+                        Hecho para estudiar a tu ritmo
+                    </span>
+                </div>
+
+                <div class="hero-footnote">
+                    <span class="footnote-icon" aria-hidden="true">✳</span>
+                    Menos pendientes en tu cabeza.
+                    Más espacio para avanzar.
+                </div>
+            </div>
+
+            <div class="hero-art" role="img"
+                 aria-label="Agenda académica organizada">
+
+                <div class="art-orbit orbit-one"></div>
+                <div class="art-orbit orbit-two"></div>
+
+                <div class="art-spark spark-one" aria-hidden="true">✳</div>
+                <div class="art-spark spark-two" aria-hidden="true">✦</div>
+
+                <div class="organizer-card">
+
+                    <div class="organizer-top">
+                        <span class="organizer-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <rect x="3.5" y="5" width="17"
+                                      height="15.5" rx="3"
+                                      stroke="currentColor"
+                                      stroke-width="1.7"/>
+                                <path d="M7.5 3.5v3M16.5 3.5v3M4 9.5h16"
+                                      stroke="currentColor"
+                                      stroke-width="1.7"
+                                      stroke-linecap="round"/>
+                                <path d="m8.5 14 2 2 5-5"
+                                      stroke="currentColor"
+                                      stroke-width="1.7"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+
+                        <span class="organizer-menu" aria-hidden="true">
+                            •••
+                        </span>
+                    </div>
+
+                    <p class="organizer-caption">
+                        TU ESPACIO, A TU MANERA
+                    </p>
+
+                    <h2>Ideas claras.<br>Metas posibles.</h2>
+
+                    <div class="organizer-divider"></div>
+
+                    <div class="organizer-list">
+
+                        <div class="organizer-row">
+                            <span class="row-check" aria-hidden="true">
+                                <svg viewBox="0 0 16 16" fill="none">
+                                    <path d="m3.5 8 3 3 6-6"
+                                          stroke="currentColor"
+                                          stroke-width="1.7"
+                                          stroke-linecap="round"
+                                          stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                            <span>Materias en un solo lugar</span>
+                            <span class="row-arrow" aria-hidden="true">↗</span>
+                        </div>
+
+                        <div class="organizer-row">
+                            <span class="row-check row-check-lilac"
+                                  aria-hidden="true">
+                                <svg viewBox="0 0 16 16" fill="none">
+                                    <path d="m3.5 8 3 3 6-6"
+                                          stroke="currentColor"
+                                          stroke-width="1.7"
+                                          stroke-linecap="round"
+                                          stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                            <span>Actividades más visibles</span>
+                            <span class="row-arrow" aria-hidden="true">↗</span>
+                        </div>
+
+                        <div class="organizer-row">
+                            <span class="row-check row-check-peach"
+                                  aria-hidden="true">
+                                <svg viewBox="0 0 16 16" fill="none">
+                                    <path d="m3.5 8 3 3 6-6"
+                                          stroke="currentColor"
+                                          stroke-width="1.7"
+                                          stroke-linecap="round"
+                                          stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                            <span>Tu progreso, paso a paso</span>
+                            <span class="row-arrow" aria-hidden="true">↗</span>
+                        </div>
+                    </div>
+
+                    <div class="organizer-bottom">
+                        <span class="bottom-avatars" aria-hidden="true">
+                            <i></i><i></i><i></i>
+                        </span>
+                        <span>Un paso a la vez</span>
+                        <span class="bottom-star" aria-hidden="true">✳</span>
+                    </div>
+                </div>
+
+                <div class="floating-note">
+                    <span class="note-icon" aria-hidden="true">✦</span>
+                    <span><strong>Tu ritmo.</strong><br>Tu camino.</span>
+                </div>
+
+                <div class="art-caption">
+                    ORDENA · ENFOCA · AVANZA
+                </div>
+            </div>
+        </section>
+
+        <section class="feature-section" id="funciones"
+                 aria-labelledby="features-title">
+
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">
+                        <span class="eyebrow-line"></span>
+                        TODO EN SU LUGAR
+                    </p>
+                    <h2 id="features-title">
+                        Haz espacio para lo que importa.
+                    </h2>
+                </div>
+
+                <p class="section-description">
+                    Una forma más sencilla de acompañar
+                    cada parte de tu vida académica.
+                </p>
+            </div>
+
+            <div class="feature-grid">
+
+                <a class="feature-card feature-mint feature-card-link"
+                   href="/materias.html"
+                   aria-label="Administrar mis materias">
+
+                    <div class="feature-card-top">
+                        <span class="feature-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M4 6.5A2.5 2.5 0 0 1 6.5 4H20v15H6.5A2.5 2.5 0 0 1 4 16.5v-10Z"
+                                      stroke="currentColor"
+                                      stroke-width="1.7"
+                                      stroke-linejoin="round"/>
+                                <path d="M4 16.5A2.5 2.5 0 0 1 6.5 14H20M8 8h7M8 11h5"
+                                      stroke="currentColor"
+                                      stroke-width="1.7"
+                                      stroke-linecap="round"/>
+                            </svg>
+                        </span>
+                        <span class="feature-number">01</span>
+                    </div>
+
+                    <h3>Tus materias</h3>
+                    <p>
+                        Registra y organiza todas tus asignaturas.
+                        Haz clic aquí para administrarlas.
+                    </p>
+
+                    <span class="feature-decoration decoration-book"
+                          aria-hidden="true"></span>
+                </a>
+
+                <a class="feature-card feature-lilac feature-card-link"
+                   href="#actividades" aria-label="Ir a mis actividades">
+
+                    <div class="feature-card-top">
+                        <span class="feature-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <rect x="4" y="5" width="16" height="16"
+                                      rx="3" stroke="currentColor"
+                                      stroke-width="1.7"/>
+                                <path d="M8 3v4M16 3v4M4.5 9.5h15M8 13h3M8 16.5h6"
+                                      stroke="currentColor"
+                                      stroke-width="1.7"
+                                      stroke-linecap="round"/>
+                            </svg>
+                        </span>
+                        <span class="feature-number">02</span>
+                    </div>
+
+                    <h3>Tus actividades</h3>
+                    <p>
+                        Registra tareas, consulta fechas de entrega
+                        y revisa tus pendientes.
+                    </p>
+
+                    <span class="feature-decoration decoration-calendar"
+                          aria-hidden="true"></span>
+                </a>
+
+                <article class="feature-card feature-peach">
+                    <div class="feature-card-top">
+                        <span class="feature-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M4 19V5M4 19h17"
+                                      stroke="currentColor"
+                                      stroke-width="1.7"
+                                      stroke-linecap="round"/>
+                                <path d="m7 15 4-4 3 2 6-7"
+                                      stroke="currentColor"
+                                      stroke-width="1.7"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                                <circle cx="20" cy="6" r="1.5"
+                                        fill="currentColor"/>
+                            </svg>
+                        </span>
+                        <span class="feature-number">03</span>
+                    </div>
+
+                    <h3>Tu progreso</h3>
+                    <p>
+                        Reconoce lo que ya lograste
+                        y enfócate en lo que sigue.
+                    </p>
+
+                    <span class="feature-decoration decoration-progress"
+                          aria-hidden="true"></span>
+                </article>
+            </div>
+        </section>
+
+        <section class="activities-section" id="actividades"
+                 aria-labelledby="activities-title">
+
+            <div class="section-heading">
+                <div>
+                    <a href="#inicio"
+                       class="fulfill-volver"
+                       aria-label="Volver al inicio de Fulfill">
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="2"
+                             stroke-linecap="round"
+                             stroke-linejoin="round"
+                             aria-hidden="true">
+                            <path d="m15 18-6-6 6-6"></path>
+                        </svg>
+                        <span>Volver al inicio</span>
+                    </a>
+
+                    <p class="eyebrow">
+                        <span class="eyebrow-line"></span>
+                        TU ORGANIZACIÓN
+                    </p>
+
+                    <h2 id="activities-title">
+                        Mis actividades académicas
+                    </h2>
+                </div>
+
+                <p class="section-description">
+                    Consulta tus tareas, materias,
+                    fechas de entrega y estados
+                    desde un solo lugar.
+                </p>
+            </div>
+
+            <div class="activity-form-card">
+                <form id="form-actividad">
+
+                    <div class="activity-form-grid">
+
+                        <div class="form-field">
+                            <label for="titulo-actividad">
+                                Nombre de la actividad
+                            </label>
+
+                            <input type="text"
+                                   id="titulo-actividad"
+                                   name="titulo"
+                                   placeholder="Ej. Entregar proyecto final"
+                                   maxlength="150"
+                                   required>
+                        </div>
+
+                        <div class="form-field">
+                            <label for="materia-actividad">Materia</label>
+
+                            <select id="materia-actividad"
+                                    name="id_materia" required>
+                                <option value="">
+                                    Cargando materias...
+                                </option>
+                            </select>
+
+                            <a href="/materias.html"
+                               class="add-subject-link">
+                                + Agregar otra materia
+                            </a>
+                        </div>
+
+                        <div class="form-field form-field-full">
+                            <label for="descripcion-actividad">
+                                Descripción
+                            </label>
+
+                            <textarea id="descripcion-actividad"
+                                      name="descripcion"
+                                      rows="3"
+                                      placeholder="Describe lo que necesitas realizar..."></textarea>
+                        </div>
+
+                        <div class="form-field">
+                            <label for="fecha-actividad">
+                                Fecha de entrega
+                            </label>
+
+                            <input type="date"
+                                   id="fecha-actividad"
+                                   name="fecha_entrega"
+                                   required>
+                        </div>
+
+                        <div class="form-field">
+                            <label>Estado inicial</label>
+
+                            <div class="initial-status">
+                                <span class="activity-status pendiente">
+                                    Pendiente
+                                </span>
+
+                                <small>
+                                    Las actividades nuevas comienzan
+                                    como pendientes.
+                                </small>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="activity-form-footer">
+                        <p id="mensaje-actividad"
+                           class="activity-form-message"
+                           aria-live="polite"></p>
+
+                        <button type="submit"
+                                class="activity-submit-button"
+                                id="guardar-actividad">
+                            Guardar actividad
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="activities-card">
+
+                <div class="activities-table-wrapper">
+                    <table class="activities-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Actividad</th>
+                                <th scope="col">Materia</th>
+                                <th scope="col">Fecha de entrega</th>
+                                <th scope="col">Estado</th>
+                                <th scope="col">Acciones</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="tabla-actividades">
+                            <tr>
+                                <td colspan="5">
+                                    Cargando actividades...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p id="total-actividades"
+                   class="activities-total"
+                   aria-live="polite"></p>
+
+            </div>
+        </section>
+
+        <section id="seccion-editar"
+                 class="edit-activity-section"
+                 aria-labelledby="titulo-edicion"
+                 hidden>
+
+            <div class="activity-form-card">
+
+                <div class="activity-form-heading">
+                    <p class="activity-form-label">
+                        EDITAR ACTIVIDAD
+                    </p>
+
+                    <h2 id="titulo-edicion">
+                        Actualiza tu actividad
+                    </h2>
+
+                    <p>
+                        Modifica los datos de tu tarea
+                        y actualiza su progreso.
+                    </p>
+                </div>
+
+                <form id="form-editar-actividad">
+
+                    <input type="hidden" id="editar-id">
+
+                    <div class="activity-form-grid">
+
+                        <div class="form-field">
+                            <label for="editar-titulo">
+                                Nombre de la actividad
+                            </label>
+
+                            <input type="text"
+                                   id="editar-titulo"
+                                   maxlength="150"
+                                   required>
+                        </div>
+
+                        <div class="form-field">
+                            <label for="editar-fecha">
+                                Fecha de entrega
+                            </label>
+
+                            <input type="date"
+                                   id="editar-fecha"
+                                   required>
+                        </div>
+
+                        <div class="form-field form-field-full">
+                            <label for="editar-descripcion">
+                                Descripción
+                            </label>
+
+                            <textarea id="editar-descripcion"
+                                      rows="3"></textarea>
+                        </div>
+
+                        <div class="form-field">
+                            <label for="editar-estado">
+                                Estado de la actividad
+                            </label>
+
+                            <select id="editar-estado" required>
+                                <option value="pendiente">
+                                    Pendiente
+                                </option>
+                                <option value="en_proceso">
+                                    En proceso
+                                </option>
+                                <option value="completada">
+                                    Completada
+                                </option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div class="activity-form-footer">
+
+                        <p id="mensaje-edicion"
+                           class="activity-form-message"
+                           aria-live="polite"></p>
+
+                        <div class="edit-actions">
+                            <button type="button"
+                                    id="cancelar-edicion"
+                                    class="edit-cancel-button">
+                                Cancelar
+                            </button>
+
+                            <button type="submit"
+                                    id="guardar-edicion"
+                                    class="activity-submit-button">
+                                Guardar cambios
+                            </button>
+                        </div>
+
+                    </div>
+
+                </form>
+            </div>
+        </section>
+
+        <section class="connection-section" id="conexion"
+                 aria-labelledby="connection-title">
+
+            <div class="connection-mark" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M5 12.5 9.3 17 19 7"
+                          stroke="currentColor" stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"/>
+                    <circle cx="12" cy="12" r="9"
+                            stroke="currentColor" stroke-width="1.5"/>
+                </svg>
+            </div>
+
+            <div class="connection-copy">
+                <p class="connection-label">SIEMPRE CERCA</p>
+                <h2 id="connection-title">¿Todo en orden por aquí?</h2>
+                <p>
+                    Comprueba que Fulfill está conectado
+                    y listo para acompañarte.
+                </p>
+
+                <p id="resultado"
+                   class="connection-result"
+                   aria-live="polite"></p>
+            </div>
+
+            <button id="verificar"
+                    class="connection-button"
+                    type="button">
+                Comprobar conexión
+
+                <svg viewBox="0 0 20 20" fill="none"
+                     aria-hidden="true">
+                    <path d="M4 10h12m-5-5 5 5-5 5"
+                          stroke="currentColor"
+                          stroke-width="1.8"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </section>
+
+    </main>
+
+    <footer class="site-footer">
+        <a class="brand footer-brand" href="#inicio"
+           aria-label="Fulfill, volver al inicio">
+
+            <span class="brand-mark" aria-hidden="true">
+                <svg viewBox="0 0 32 32" fill="none">
+                    <path d="M8 16.5 13.2 22 24 10"
+                          stroke="currentColor"
+                          stroke-width="3"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"/>
+                    <path d="M16 3.5a12.5 12.5 0 1 0 12.5 12.5"
+                          stroke="currentColor"
+                          stroke-width="2.5"
+                          stroke-linecap="round"/>
+                </svg>
+            </span>
+
+            <span>fulfill<span class="brand-period">.</span></span>
+        </a>
+
+        <span class="footer-caption">
+            Un paso a la vez. Vas muy bien.
+        </span>
+
+        <span class="footer-spark" aria-hidden="true">✳</span>
+    </footer>
+
+</div>
+
+<script src="/script.js"></script>
+<script src="/sesion.js" defer></script>
+
+
+</body>
+</html>

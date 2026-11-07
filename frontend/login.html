@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+    <title>Fulfill</title>
+
+    <style>
+        :root {
+            --verde: #376d57;
+            --verde-oscuro: #285441;
+            --fondo: #f7f8f5;
+            --texto: #1b2b27;
+            --gris: #78867e;
+            --borde: #dce6dd;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: var(--fondo);
+            color: var(--texto);
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 100vh;
+        }
+
+        .presentacion {
+            background: linear-gradient(
+                145deg,
+                #e9f1e8,
+                #f4f5ed
+            );
+
+            padding: 65px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--texto);
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -1.5px;
+            text-decoration: none;
+        }
+
+        .logo-icono {
+            width: 42px;
+            height: 42px;
+            background: var(--verde);
+            color: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-icono svg {
+            width: 25px;
+            height: 25px;
+        }
+
+        .punto {
+            color: #83ac91;
+        }
+
+        .mensaje-principal {
+            max-width: 550px;
+        }
+
+        .etiqueta {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--verde);
+            font-weight: 700;
+        }
+
+        .mensaje-principal h1 {
+            font-size: clamp(42px, 5vw, 76px);
+            line-height: 1.08;
+            letter-spacing: -3px;
+            margin: 24px 0;
+        }
+
+        .mensaje-principal h1 span {
+            color: var(--verde);
+        }
+
+        .mensaje-principal p {
+            font-size: 17px;
+            line-height: 1.8;
+            color: var(--gris);
+        }
+
+        .pie-presentacion {
+            font-size: 13px;
+            color: var(--gris);
+        }
+
+        .zona-formulario {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 45px;
+        }
+
+        .tarjeta {
+            width: 100%;
+            max-width: 440px;
+        }
+
+        .tarjeta h2 {
+            font-size: 35px;
+            letter-spacing: -1.2px;
+            margin: 0 0 12px;
+        }
+
+        .subtitulo {
+            color: var(--gris);
+            line-height: 1.6;
+            margin-bottom: 34px;
+        }
+
+        .campo {
+            margin-bottom: 22px;
+        }
+
+        label {
+            display: block;
+            font-weight: 650;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        input {
+            width: 100%;
+            height: 54px;
+            border: 1px solid var(--borde);
+            border-radius: 12px;
+            padding: 0 17px;
+            background: #fff;
+            color: var(--texto);
+            font: inherit;
+            transition: border-color .2s, box-shadow .2s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--verde);
+            box-shadow: 0 0 0 3px rgba(55,109,87,.11);
+        }
+
+        .password-container {
+            position: relative;
+        }
+
+        .password-container input {
+            padding-right: 85px;
+        }
+
+        .mostrar-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--verde);
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .boton-principal {
+            width: 100%;
+            height: 55px;
+            border: 0;
+            border-radius: 12px;
+            background: var(--verde);
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background .2s, transform .2s;
+        }
+
+        .boton-principal:hover {
+            background: var(--verde-oscuro);
+            transform: translateY(-1px);
+        }
+
+        .boton-principal:disabled {
+            opacity: .65;
+            cursor: not-allowed;
+        }
+
+        .alternativa {
+            margin-top: 28px;
+            text-align: center;
+            color: var(--gris);
+            font-size: 14px;
+        }
+
+        .enlace {
+            color: var(--verde);
+            background: none;
+            border: none;
+            font: inherit;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        .mensaje-estado {
+            margin-top: 18px;
+            padding: 12px 15px;
+            border-radius: 10px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .mensaje-estado:empty {
+            display: none;
+        }
+
+        .mensaje-estado.error {
+            background: #fff0ed;
+            color: #a84640;
+        }
+
+        .mensaje-estado.exito {
+            background: #e8f3e9;
+            color: #286445;
+        }
+
+        .oculto {
+            display: none;
+        }
+
+        @media (max-width: 850px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+
+            .presentacion {
+                min-height: 230px;
+                padding: 30px;
+            }
+
+            .mensaje-principal h1 {
+                font-size: 38px;
+                letter-spacing: -1px;
+            }
+
+            .mensaje-principal p,
+            .pie-presentacion {
+                display: none;
+            }
+
+            .zona-formulario {
+                padding: 45px 24px;
+            }
+
+            .tarjeta h2 {
+                font-size: 29px;
+            }
+        }
+    </style>
+
+    <script src="/auth.js" defer></script>
+</head>
+
+<body>
+
+    <main class="layout">
+
+        <section class="presentacion">
+
+            <div class="logo">
+                <span class="logo-icono">
+                    <svg viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="2.2"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="9"/>
+                        <path d="m8 12 3 3 5-6"/>
+                    </svg>
+                </span>
+
+                <span>Fulfill<span class="punto">.</span></span>
+            </div>
+
+            <div class="mensaje-principal">
+                <span class="etiqueta">Tu espacio académico</span>
+
+                <h1>
+                    Un semestre<br>
+                    más <span>en orden.</span>
+                </h1>
+
+                <p>
+                    Organiza tus materias, administra tus
+                    actividades y avanza a tu propio ritmo.
+                    Todo lo que necesitas, en un solo lugar.
+                </p>
+            </div>
+
+            <div class="pie-presentacion">
+                FULFILL · ORGANIZA · ENFOCA · AVANZA
+            </div>
+
+        </section>
+
+
+        <section class="zona-formulario">
+
+            <div class="tarjeta">
+
+                <h2 id="titulo-formulario">
+                    ¡Qué bueno tenerte de vuelta!
+                </h2>
+
+                <p class="subtitulo" id="subtitulo-formulario">
+                    Inicia sesión para continuar organizando
+                    tu vida académica.
+                </p>
+
+                <form id="form-auth">
+
+                    <div class="campo oculto" id="campo-nombre">
+                        <label for="nombre">Nombre completo:</label>
+
+                        <input
+                            id="nombre"
+                            type="text"
+                            placeholder="Tu nombre"
+                            maxlength="100"
+                            autocomplete="name"
+                        >
+                    </div>
+
+                    <div class="campo">
+                        <label for="correo">Correo electrónico:</label>
+
+                        <input
+                            id="correo"
+                            type="email"
+                            placeholder="tucorreo@correo.com"
+                            maxlength="150"
+                            autocomplete="email"
+                            required
+                        >
+                    </div>
+
+                    <div class="campo">
+                        <label for="password">Contraseña:</label>
+
+                        <div class="password-container">
+
+                            <input
+                                id="password"
+                                type="password"
+                                placeholder="Introduce tu contraseña"
+                                autocomplete="current-password"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="mostrar-password"
+                                id="mostrar-password"
+                            >
+                                Mostrar
+                            </button>
+
+                        </div>
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="boton-principal"
+                        id="boton-enviar"
+                    >
+                        Iniciar sesión
+                    </button>
+
+                </form>
+
+                <div
+                    id="mensaje-estado"
+                    class="mensaje-estado"
+                    role="status"
+                    aria-live="polite"
+                ></div>
+
+                <div class="alternativa">
+
+                    <span id="texto-alternativa">
+                        ¿Todavía no tienes cuenta?
+                    </span>
+
+                    <button
+                        type="button"
+                        class="enlace"
+                        id="cambiar-modo"
+                    >
+                        Regístrate
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+</html>

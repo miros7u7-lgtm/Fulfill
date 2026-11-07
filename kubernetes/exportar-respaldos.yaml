@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: exportar-respaldos
+  namespace: fulfill
+  labels:
+    app: exportar-respaldos
+spec:
+  restartPolicy: Never
+  automountServiceAccountToken: false
+
+  containers:
+    - name: exportador
+      image: alpine:3.20
+      imagePullPolicy: IfNotPresent
+
+      command:
+        - /bin/sh
+        - -c
+        - sleep 3600
+
+      resources:
+        requests:
+          cpu: 10m
+          memory: 16Mi
+        limits:
+          cpu: 100m
+          memory: 64Mi
+
+      volumeMounts:
+        - name: backup-postgres
+          mountPath: /respaldos-postgres
+          readOnly: true
+
+        - name: backup-mongo
+          mountPath: /respaldos-mongo
+          readOnly: true
+
+  volumes:
+    - name: backup-postgres
+      persistentVolumeClaim:
+        claimName: respaldos-postgres-data
+        readOnly: true
+
+    - name: backup-mongo
+      persistentVolumeClaim:
+        claimName: respaldos-mongo-data
+        readOnly: true

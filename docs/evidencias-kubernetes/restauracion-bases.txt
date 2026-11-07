@@ -1,0 +1,34 @@
+FULFILL — PRUEBAS DE RECUPERACION
+
+Entorno original:
+Namespace: fulfill
+
+Entorno de recuperacion:
+Namespace: fulfill-recuperacion
+
+POSTGRESQL
+Base restaurada: fulfill_restore
+Archivo: postgres-fulfill.dump
+Codigo de salida: 0
+Duracion del comando: 2 segundos
+Usuarios recuperados: 4
+Materias recuperadas: 6
+Actividades recuperadas: 6
+Restricciones registradas: 29
+Indices registrados: 5
+
+MONGODB
+Base restaurada: fulfill_logs_restore
+Archivo: mongo-fulfill.archive.gz
+Codigo de salida: 0
+Duracion del comando: 5 segundos
+Documentos recuperados: 1
+Documentos fallidos: 0
+Coleccion: historial_modificaciones
+
+OBSERVACIONES
+- Se utilizaron instancias y PVC independientes.
+- Las bases originales continuaron operativas.
+- Los tiempos registrados corresponden a comandos de restauracion.
+- El RTO completo y la recuperacion funcional requieren pruebas adicionales.
+- Pendiente: automatizacion, retencion y cifrado de respaldos.

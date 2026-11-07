@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fulfill-config
+  namespace: fulfill
+
+data:
+  DB_HOST: "postgres"
+  DB_PORT: "5432"
+  DB_NAME: "fulfill_db"
+  MONGO_URI: "mongodb://mongo:27017/"
+  PYTHONUNBUFFERED: "1"

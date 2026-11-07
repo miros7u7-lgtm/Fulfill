@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fulfill-alertas
+  namespace: monitoring
+  labels:
+    role: alert-rules
+data:
+  alertas.yml: |
+    groups:
+      - name: fulfill-alertas
+        interval: 15s
+        rules:
+          - alert: FulfillDeploymentSinReplicas
+            expr: |
+              kube_deployment_status_replicas_available{
+                namespace="monitoring",
+                deployment="fulfill-prueba-alerta"
+              } == 0
+            for: 30s
+            labels:
+              severity: warning
+              proyecto: fulfill
+            annotations:
+              summary: "Deployment de prueba sin replicas disponibles"
+              description: "El Deployment de prueba no tiene replicas disponibles."
+
+          - alert: FulfillPodNoDisponible
+            expr: |
+              kube_pod_container_status_waiting_reason{
+                namespace="monitoring",
+                reason="ImagePullBackOff"
+              } == 1
+            for: 30s
+            labels:
+              severity: warning
+              proyecto: fulfill
+            annotations:
+              summary: "Contenedor con error de descarga de imagen"
+              description: "Existe un contenedor de prueba con ImagePullBackOff."

@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Panel administrativo de Fulfill</title>
+
+    <link rel="icon" type="image/svg+xml"
+          href="/favicon.svg">
+    <link rel="stylesheet" href="/styles.css">
+
+    <style>
+
+        .admin-page {
+            width: min(1180px, 100%);
+            margin: 65px auto 100px;
+        }
+
+        .admin-eyebrow {
+            color: #376d57;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        .admin-welcome {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 36px;
+        }
+
+        .admin-welcome h1 {
+            color: #172825;
+            font-size: clamp(28px, 4vw, 42px);
+            letter-spacing: -1.5px;
+            margin: 14px 0;
+        }
+
+        .admin-description {
+            color: #78817b;
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        .admin-refresh {
+            border: 1px solid #d5e5d7;
+            background: #edf3ed;
+            color: #376d57;
+            border-radius: 12px;
+            padding: 13px 20px;
+            cursor: pointer;
+            font-weight: 700;
+            font: inherit;
+            white-space: nowrap;
+        }
+
+        .admin-refresh:hover {
+            background: #e1ece2;
+        }
+
+        .admin-refresh:disabled {
+            opacity: .6;
+            cursor: wait;
+        }
+
+        .admin-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 20px;
+            margin: 32px 0;
+        }
+
+        .admin-stat {
+            background: #ffffff;
+            border: 1px solid #e3e9e1;
+            border-radius: 20px;
+            padding: 28px;
+            min-width: 0;
+        }
+
+        .admin-stat-icon {
+            width: 47px;
+            height: 47px;
+            display: grid;
+            place-items: center;
+            border-radius: 13px;
+            background: #edf3ed;
+            color: #376d57;
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+
+        .admin-stat-value {
+            display: block;
+            font-size: 38px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            color: #172825;
+        }
+
+        .admin-stat-label {
+            display: block;
+            color: #78817b;
+            font-size: 13px;
+            margin-top: 6px;
+        }
+
+        .admin-panel {
+            background: #ffffff;
+            border: 1px solid #e3e9e1;
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 24px;
+        }
+
+        .admin-panel h2 {
+            font-size: 22px;
+            color: #172825;
+            margin: 0 0 12px;
+        }
+
+        .admin-panel-description {
+            color: #78817b;
+            font-size: 13px;
+            margin-bottom: 28px;
+        }
+
+        .admin-progress-row {
+            display: grid;
+            grid-template-columns: 125px 1fr 42px;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 22px;
+        }
+
+        .admin-progress-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #34473e;
+        }
+
+        .admin-progress-track {
+            height: 12px;
+            background: #eef2ec;
+            overflow: hidden;
+            border-radius: 20px;
+        }
+
+        .admin-progress-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: 20px;
+            transition: width .35s ease;
+        }
+
+        .fill-pending {
+            background: #e3b16c;
+        }
+
+        .fill-progress {
+            background: #969dd0;
+        }
+
+        .fill-completed {
+            background: #8bb99b;
+        }
+
+        .admin-progress-value {
+            text-align: right;
+            font-weight: 800;
+            color: #172825;
+        }
+
+        .admin-info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .admin-info-box {
+            background: #f0f5ed;
+            border-radius: 14px;
+            padding: 22px;
+        }
+
+        .admin-info-box span {
+            display: block;
+            font-size: 13px;
+            color: #78817b;
+        }
+
+        .admin-info-box strong {
+            display: block;
+            font-size: 27px;
+            color: #376d57;
+            margin-top: 8px;
+        }
+
+        .admin-session {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .admin-user-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: #376d57;
+        }
+
+        .admin-logout {
+            background: #edf3ed;
+            color: #376d57;
+            border: 1px solid #d5e5d7;
+            border-radius: 10px;
+            padding: 11px 15px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .admin-logout:hover {
+            background: #e1ece2;
+        }
+
+        .admin-error {
+            color: #b64b43;
+            font-size: 14px;
+            margin: 18px 0;
+        }
+
+        [hidden] {
+            display: none !important;
+        }
+
+        @media (max-width: 850px) {
+            .admin-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .admin-welcome {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .admin-page {
+                margin: 35px auto;
+            }
+
+            .admin-grid,
+            .admin-info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .admin-panel {
+                padding: 20px;
+            }
+
+            .admin-progress-row {
+                grid-template-columns: 95px 1fr 30px;
+                gap: 9px;
+            }
+
+            .admin-session {
+                justify-content: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page-shell">
+
+        <header class="site-header">
+
+            <a class="brand" href="/"
+               aria-label="Fulfill - Inicio">
+
+                <span class="brand-mark" aria-hidden="true">
+                    <svg viewBox="0 0 32 32" fill="none">
+                        <path
+                            d="M8 16.5 13.2 22 24 10"
+                            stroke="currentColor"
+                            stroke-width="3"
+                            stroke-linecap="round"
+                            stroke-linejoin="round">
+                        </path>
+                        <path
+                            d="M16 3.5a12.5 12.5 0 1 0 12.5 12.5"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                            stroke-linecap="round">
+                        </path>
+                    </svg>
+                </span>
+
+                <span>
+                    Fulfill<span class="brand-period">.</span>
+                </span>
+            </a>
+
+            <nav class="site-nav"
+                 aria-label="Navegación administrativa">
+
+                <a class="nav-link" href="/">
+                    Inicio
+                </a>
+
+                <a class="nav-link active" href="/admin.html"
+                   aria-current="page">
+                    Administración
+                </a>
+            </nav>
+
+            <div class="admin-session">
+                <span id="admin-nombre"
+                      class="admin-user-name">
+                    Cargando usuario...
+                </span>
+
+                <button type="button"
+                        id="admin-logout"
+                        class="admin-logout">
+                    Cerrar sesión
+                </button>
+            </div>
+
+        </header>
+
+        <!-- CONTENIDO -->
+        <main class="admin-page">
+
+            <div class="admin-welcome">
+
+                <div>
+                    <p class="admin-eyebrow">
+                        PANEL DE CONTROL
+                    </p>
+
+                    <h1>Resumen administrativo</h1>
+
+                    <p class="admin-description">
+                        Consulta el estado general de Fulfill
+                        y el progreso de las actividades.
+                    </p>
+                </div>
+
+                <button id="admin-actualizar"
+                        class="admin-refresh"
+                        type="button">
+                    Actualizar estadísticas
+                </button>
+
+            </div>
+
+            <p id="admin-mensaje"
+               role="status"
+               aria-live="polite">
+                Cargando estadísticas...
+            </p>
+
+            <p id="admin-error"
+               class="admin-error"
+               role="alert"
+               hidden>
+            </p>
+
+            <section class="admin-grid"
+                     aria-label="Estadísticas generales">
+
+                <article class="admin-stat">
+                    <div class="admin-stat-icon"
+                         aria-hidden="true">♙</div>
+
+                    <strong class="admin-stat-value"
+                            id="total-usuarios">—</strong>
+
+                    <span class="admin-stat-label">
+                        Usuarios registrados
+                    </span>
+                </article>
+
+                <article class="admin-stat">
+                    <div class="admin-stat-icon"
+                         aria-hidden="true">▤</div>
+
+                    <strong class="admin-stat-value"
+                            id="total-materias">—</strong>
+
+                    <span class="admin-stat-label">
+                        Materias activas
+                    </span>
+                </article>
+
+                <article class="admin-stat">
+                    <div class="admin-stat-icon"
+                         aria-hidden="true">✓</div>
+
+                    <strong class="admin-stat-value"
+                            id="total-actividades">—</strong>
+
+                    <span class="admin-stat-label">
+                        Actividades activas
+                    </span>
+                </article>
+
+            </section>
+
+            <section class="admin-panel">
+
+                <h2>Estado de las actividades</h2>
+
+                <p class="admin-panel-description">
+                    Distribución de las actividades académicas
+                    registradas en el sistema.
+                </p>
+
+                <div class="admin-progress-row">
+                    <span class="admin-progress-label">
+                        Pendientes
+                    </span>
+
+                    <div class="admin-progress-track">
+                        <div id="barra-pendientes"
+                             class="admin-progress-fill fill-pending">
+                        </div>
+                    </div>
+
+                    <strong id="total-pendientes"
+                            class="admin-progress-value">—</strong>
+                </div>
+
+                <div class="admin-progress-row">
+                    <span class="admin-progress-label">
+                        En proceso
+                    </span>
+
+                    <div class="admin-progress-track">
+                        <div id="barra-proceso"
+                             class="admin-progress-fill fill-progress">
+                        </div>
+                    </div>
+
+                    <strong id="total-proceso"
+                            class="admin-progress-value">—</strong>
+                </div>
+
+                <div class="admin-progress-row">
+                    <span class="admin-progress-label">
+                        Completadas
+                    </span>
+
+                    <div class="admin-progress-track">
+                        <div id="barra-completadas"
+                             class="admin-progress-fill fill-completed">
+                        </div>
+                    </div>
+
+                    <strong id="total-completadas"
+                            class="admin-progress-value">—</strong>
+                </div>
+
+            </section>
+
+            <section class="admin-panel">
+
+                <h2>Usuarios del sistema</h2>
+
+                <p class="admin-panel-description">
+                    Distribución de cuentas por rol.
+                </p>
+
+                <div class="admin-info-grid">
+
+                    <div class="admin-info-box">
+                        <span>Estudiantes registrados</span>
+                        <strong id="total-estudiantes">—</strong>
+                    </div>
+
+                    <div class="admin-info-box">
+                        <span>Administradores</span>
+                        <strong id="total-administradores">—</strong>
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <script src="/admin.js" defer></script>
+</body>
+</html>

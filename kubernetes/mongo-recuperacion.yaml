@@ -1,0 +1,70 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongo-recuperacion-data
+  namespace: fulfill-recuperacion
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-recuperacion
+  namespace: fulfill-recuperacion
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+
+  selector:
+    matchLabels:
+      app: mongo-recuperacion
+
+  template:
+    metadata:
+      labels:
+        app: mongo-recuperacion
+
+    spec:
+      automountServiceAccountToken: false
+
+      containers:
+        - name: mongo
+          image: mongo:8
+          imagePullPolicy: IfNotPresent
+
+          envFrom:
+            - secretRef:
+                name: mongo-recuperacion-secret
+
+          ports:
+            - containerPort: 27017
+
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+
+          readinessProbe:
+            tcpSocket:
+              port: 27017
+            initialDelaySeconds: 15
+            periodSeconds: 10
+
+          volumeMounts:
+            - name: mongo-data
+              mountPath: /data/db
+
+      volumes:
+        - name: mongo-data
+          persistentVolumeClaim:
+            claimName: mongo-recuperacion-data

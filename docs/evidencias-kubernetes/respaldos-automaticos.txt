@@ -1,0 +1,23 @@
+=== FULFILL: VERIFICACION DE RESPALDOS ===
+Fecha: 2026-11-05 02:00:34 CST
+
+=== CRONJOBS ===
+NAME              SCHEDULE     TIMEZONE              SUSPEND   ACTIVE   LAST SCHEDULE   AGE
+backup-mongo      30 2 * * *   America/Mexico_City   False     0        <none>          4m26s
+backup-postgres   0 2 * * *    America/Mexico_City   False     0        35s             10m
+
+=== JOBS ===
+NAME                             STATUS     COMPLETIONS   DURATION   AGE
+backup-mongo-prueba-1793865373   Complete   1/1           14s        4m22s
+backup-postgres-29897760         Complete   1/1           6s         36s
+backup-postgres-prueba           Complete   1/1           13s        10m
+verificar-backup-mongo           Complete   1/1           8s         75s
+verificar-backup-postgres        Complete   1/1           8s         75s
+
+=== INTEGRIDAD POSTGRESQL ===
+postgres-20261105T075023Z.dump: OK
+Archivo PostgreSQL valido: postgres-20261105T075023Z.dump
+
+=== INTEGRIDAD MONGODB ===
+mongo-20261105T075622Z.archive.gz: OK
+Archivo MongoDB valido: mongo-20261105T075622Z.archive.gz

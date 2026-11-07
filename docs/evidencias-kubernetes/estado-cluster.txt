@@ -1,0 +1,44 @@
+=== NODOS K3S ===
+NAME              STATUS   ROLES           AGE   VERSION        INTERNAL-IP     EXTERNAL-IP   OS-IMAGE           KERNEL-VERSION                              CONTAINER-RUNTIME
+laptop-nq7senaq   Ready    control-plane   12h   v1.36.5+k3s1   172.19.92.233   <none>        Ubuntu 26.04 LTS   6.6.114.1-microsoft-standard-WSL2 (amd64)   containerd://2.3.4-k3s1.36
+
+=== DEPLOYMENTS FULFILL ===
+NAME          READY   UP-TO-DATE   AVAILABLE   AGE
+fulfill-web   1/1     1            1           11h
+mongo         1/1     1            1           11h
+postgres      1/1     1            1           11h
+
+=== PODS FULFILL ===
+NAME                           READY   STATUS    RESTARTS   AGE
+fulfill-web-5f577c9c6d-4dkgx   1/1     Running   0          6m11s
+mongo-764555c6f8-tsdz8         1/1     Running   0          11h
+postgres-7f46c74976-tghrb      1/1     Running   0          11h
+
+=== SERVICES ===
+NAME          TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)     AGE
+fulfill-web   ClusterIP   10.43.9.209    <none>        5000/TCP    11h
+mongo         ClusterIP   10.43.63.188   <none>        27017/TCP   11h
+postgres      ClusterIP   10.43.207.72   <none>        5432/TCP    11h
+
+=== VOLUMENES PERSISTENTES ===
+NAME            STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+mongo-data      Bound    pvc-75857320-bafe-4b28-b763-caf7735f1676   1Gi        RWO            local-path     <unset>                 11h
+postgres-data   Bound    pvc-2b903931-0f22-47c6-a564-58b734e49bbe   2Gi        RWO            local-path     <unset>                 11h
+
+=== NETWORKPOLICIES ===
+NAME                       POD-SELECTOR           AGE
+flask-egress-restringido   app=fulfill-web        89m
+flask-only-traefik         app=fulfill-web        98m
+mongo-only-flask           app=fulfill-mongo      110m
+postgres-only-flask        app=fulfill-postgres   126m
+
+=== HPA ===
+NAME              REFERENCE                TARGETS       MINPODS   MAXPODS   REPLICAS   AGE
+fulfill-web-hpa   Deployment/fulfill-web   cpu: 6%/60%   1         2         1          58m
+
+=== INGRESS ===
+NAME              CLASS     HOSTS                   ADDRESS   PORTS     AGE
+fulfill-ingress   traefik   fulfill-dev.localhost             80, 443   10h
+
+=== ROLLINGUPDATE ===
+RollingUpdate

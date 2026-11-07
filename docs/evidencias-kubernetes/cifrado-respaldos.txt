@@ -1,0 +1,16 @@
+=== FULFILL: CIFRADO DE RESPALDOS ===
+Fecha: 2026-11-05 02:07:36 CST
+
+=== VERSION DE AGE ===
+1.2.1
+
+=== ARCHIVOS CIFRADOS ===
+total 16K
+-rw------- 1 miros miros  654 Nov  5 02:04 mongo-fulfill.archive.gz.age
+-rw------- 1 miros miros 9.7K Nov  5 02:04 postgres-fulfill.dump.age
+
+=== INTEGRIDAD POSTGRESQL ===
+a21c29676e7549ebfba129b31564154aad1161a7246af55e0c963070a8f065f6  -
+
+=== INTEGRIDAD MONGODB ===
+185508d6bd159f7ad77bfc72adf790bb8b4c70e1a2d5c5a4bd4c2e63428a148c  -

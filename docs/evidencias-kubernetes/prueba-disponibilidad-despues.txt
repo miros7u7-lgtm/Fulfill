@@ -1,0 +1,48 @@
+=== FULFILL: ESTADO DESPUES DE LA PRUEBA ===
+2026-11-05 02:37:37 CST
+
+=== DEPLOYMENTS ===
+NAME          READY   UP-TO-DATE   AVAILABLE   AGE
+fulfill-web   1/1     1            1           15h
+mongo         1/1     1            1           15h
+postgres      1/1     1            1           15h
+
+=== PODS ===
+NAME                                    READY   STATUS      RESTARTS   AGE
+backup-mongo-29897790-xtwgs             0/1     Completed   0          7m38s
+backup-mongo-cifrado-1793867052-5wqhg   0/1     Completed   0          13m
+backup-mongo-prueba-1793865373-m88xf    0/1     Completed   0          41m
+backup-pg-cifrado-1793867037-jdrd7      0/1     Completed   0          13m
+backup-postgres-29897760-lchs7          0/1     Completed   0          37m
+backup-postgres-prueba-rsb7s            0/1     Completed   0          47m
+fulfill-web-849f54c6fc-hqlvq            1/1     Running     0          29s
+mongo-6d575c8bfc-4x76t                  1/1     Running     0          59m
+postgres-7f46c74976-tghrb               1/1     Running     0          14h
+verificar-backup-mongo-qzds2            0/1     Completed   0          38m
+verificar-backup-postgres-pwjhk         0/1     Completed   0          38m
+
+=== HPA ===
+NAME              REFERENCE                TARGETS              MINPODS   MAXPODS   REPLICAS   AGE
+fulfill-web-hpa   Deployment/fulfill-web   cpu: <unknown>/60%   1         2         1          4h41m
+
+=== EVENTOS RECIENTES ===
+7m39s       Normal    SuccessfulCreate               job/backup-mongo-29897790                       Created pod: backup-mongo-29897790-xtwgs
+7m39s       Normal    SuccessfulCreate               cronjob/backup-mongo                            Created job backup-mongo-29897790
+7m38s       Normal    Pulled                         pod/backup-mongo-29897790-xtwgs                 Container image "docker.io/library/fulfill-backup-mongo:1.0" already present on machine and can be accessed by the pod
+7m38s       Normal    Created                        pod/backup-mongo-29897790-xtwgs                 Container created
+7m37s       Normal    Started                        pod/backup-mongo-29897790-xtwgs                 Container started
+7m31s       Normal    SawCompletedJob                cronjob/backup-mongo                            Saw completed job: backup-mongo-29897790, condition: Complete
+7m31s       Normal    Completed                      job/backup-mongo-29897790                       Job completed
+7m27s       Normal    Killing                        pod/exportar-respaldos                          Stopping container exportador
+2m13s       Warning   Unhealthy                      pod/postgres-7f46c74976-tghrb                   Readiness probe failed: command timed out: "/bin/sh -c pg_isready -U \"$POSTGRES_USER\" -d \"$POSTGRES_DB\"" timed out after 1s
+30s         Normal    SuccessfulCreate               replicaset/fulfill-web-849f54c6fc               Created pod: fulfill-web-849f54c6fc-hqlvq
+30s         Normal    ScalingReplicaSet              deployment/fulfill-web                          Scaled up replica set fulfill-web-849f54c6fc from 0 to 1
+28s         Normal    Created                        pod/fulfill-web-849f54c6fc-hqlvq                Container created
+28s         Normal    Pulled                         pod/fulfill-web-849f54c6fc-hqlvq                Container image "docker.io/library/fulfill-web:latest" already present on machine and can be accessed by the pod
+27s         Normal    Started                        pod/fulfill-web-849f54c6fc-hqlvq                Container started
+16s         Normal    Killing                        pod/fulfill-web-7d854dd4f8-x7sp8                Stopping container fulfill-web
+16s         Normal    SuccessfulDelete               replicaset/fulfill-web-7d854dd4f8               Deleted pod: fulfill-web-7d854dd4f8-x7sp8
+16s         Normal    ScalingReplicaSet              deployment/fulfill-web                          Scaled down replica set fulfill-web-7d854dd4f8 from 1 to 0
+14s         Warning   Unhealthy                      pod/fulfill-web-7d854dd4f8-x7sp8                Readiness probe failed: Get "http://10.42.0.36:5000/api/salud": dial tcp 10.42.0.36:5000: connect: connection refused
+7s          Warning   FailedGetResourceMetric        horizontalpodautoscaler/fulfill-web-hpa         failed to get cpu utilization: did not receive metrics for targeted pods (pods might be unready)
+7s          Warning   FailedComputeMetricsReplicas   horizontalpodautoscaler/fulfill-web-hpa         invalid metrics (1 invalid out of 1), first error is: failed to get cpu resource metric value: failed to get cpu utilization: did not receive metrics for targeted pods (pods might be unready)

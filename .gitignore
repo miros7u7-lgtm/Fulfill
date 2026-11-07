@@ -1,0 +1,54 @@
+# Entorno virtual de Python
+.venv/
+
+# Contraseñas y configuración privada
+.env
+.env.*
+!.env.example
+
+# Archivos temporales de Python
+__pycache__/
+*.pyc
+
+# Configuración local
+.vscode/
+
+# Respaldos de bases de datos
+*.dump
+*.backup
+
+# Archivos de respaldo y exportaciones
+*.tar
+*.tar.gz
+*.zip
+*.dump
+*.backup
+*.archive.gz
+*.age
+*.sha256
+*.sql.gz
+*.tmp
+.tmp-*
+
+# Claves privadas y certificados
+*.key
+*.pem
+*.p12
+*.pfx
+*.kubeconfig
+kubeconfig
+id_rsa
+id_ed25519
+
+# Archivos locales y temporales
+.DS_Store
+Thumbs.db
+*.log
+
+# Scripts auxiliares pendientes de revisión
+/backend/consultar_actividades.py
+/backend/corregir_usuario.py
+
+# Exportaciones SQL con registros de usuarios
+/database/fulfill_docker.sql
+/database/fulfill_init.sql

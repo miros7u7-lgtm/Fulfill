@@ -1,0 +1,38 @@
+=== FULFILL: ESTADO ANTES DE LA PRUEBA ===
+2026-11-05 02:37:00 CST
+
+=== DEPLOYMENTS ===
+NAME          READY   UP-TO-DATE   AVAILABLE   AGE
+fulfill-web   1/1     1            1           15h
+mongo         1/1     1            1           15h
+postgres      1/1     1            1           15h
+
+=== PODS ===
+NAME                                    READY   STATUS      RESTARTS   AGE
+backup-mongo-29897790-xtwgs             0/1     Completed   0          7m4s
+backup-mongo-cifrado-1793867052-5wqhg   0/1     Completed   0          12m
+backup-mongo-prueba-1793865373-m88xf    0/1     Completed   0          40m
+backup-pg-cifrado-1793867037-jdrd7      0/1     Completed   0          13m
+backup-postgres-29897760-lchs7          0/1     Completed   0          37m
+backup-postgres-prueba-rsb7s            0/1     Completed   0          46m
+fulfill-web-7d854dd4f8-x7sp8            1/1     Running     0          63m
+mongo-6d575c8bfc-4x76t                  1/1     Running     0          59m
+postgres-7f46c74976-tghrb               1/1     Running     0          14h
+verificar-backup-mongo-qzds2            0/1     Completed   0          37m
+verificar-backup-postgres-pwjhk         0/1     Completed   0          37m
+
+=== HPA ===
+NAME              REFERENCE                TARGETS       MINPODS   MAXPODS   REPLICAS   AGE
+fulfill-web-hpa   Deployment/fulfill-web   cpu: 4%/60%   1         2         1          4h41m
+
+=== ALMACENAMIENTO ===
+NAME                      STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+mongo-data                Bound    pvc-75857320-bafe-4b28-b763-caf7735f1676   1Gi        RWO            local-path     <unset>                 15h
+postgres-data             Bound    pvc-2b903931-0f22-47c6-a564-58b734e49bbe   2Gi        RWO            local-path     <unset>                 15h
+respaldos-mongo-data      Bound    pvc-55cdff45-97cb-4f2e-b897-a7f863194254   1Gi        RWO            local-path     <unset>                 40m
+respaldos-postgres-data   Bound    pvc-db4d27aa-9772-4fae-ab6b-420194b585c4   1Gi        RWO            local-path     <unset>                 47m
+
+=== CRONJOBS ===
+NAME              SCHEDULE     TIMEZONE              SUSPEND   ACTIVE   LAST SCHEDULE   AGE
+backup-mongo      30 2 * * *   America/Mexico_City   False     0        7m5s            40m
+backup-postgres   0 2 * * *    America/Mexico_City   False     0        37m             47m

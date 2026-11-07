@@ -1,0 +1,59 @@
+deployment:
+  enabled: true
+  replicas: 1
+
+# Registrar la clase de entrada
+ingressClass:
+  enabled: true
+  isDefaultClass: false
+  name: traefik
+
+# Utilizar Ingress tradicional de Kubernetes
+providers:
+  kubernetesIngress:
+    enabled: true
+    ingressClass: traefik
+    publishedService:
+      enabled: false
+
+  kubernetesCRD:
+    enabled: false
+
+  kubernetesGateway:
+    enabled: false
+
+gateway:
+  enabled: false
+
+# Servicio accesible solo dentro de Kubernetes
+service:
+  enabled: true
+  spec:
+    type: ClusterIP
+
+# Recursos adecuados para el laboratorio
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    cpu: 300m
+    memory: 256Mi
+
+# No publicar el panel de administración
+ingressRoute:
+  dashboard:
+    enabled: false
+
+# Mantener los puertos HTTP y HTTPS
+ports:
+  web:
+    port: 8000
+    exposedPort: 80
+
+  websecure:
+    port: 8443
+    exposedPort: 443
+    http:
+      tls:
+        enabled: true

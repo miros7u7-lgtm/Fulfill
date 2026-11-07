@@ -1,0 +1,116 @@
+=== HPA: CONDICIONES Y EVENTOS ===
+Name:                                                  fulfill-web-hpa
+Namespace:                                             fulfill
+Labels:                                                <none>
+Annotations:                                           <none>
+CreationTimestamp:                                     Wed, 04 Nov 2026 21:55:52 -0600
+Reference:                                             Deployment/fulfill-web
+Metrics:                                               ( current / target )
+  resource cpu on pods  (as a percentage of request):  10% (5m) / 60%
+Min replicas:                                          1
+Max replicas:                                          2
+Behavior:
+  Scale Up:
+    Stabilization Window: 0 seconds
+    Select Policy: Max
+    Policies:
+      - Type: Pods  Value: 1  Period: 60 seconds
+  Scale Down:
+    Stabilization Window: 300 seconds
+    Select Policy: Max
+    Policies:
+      - Type: Percent  Value: 100  Period: 15 seconds
+Deployment pods:       1 current / 1 desired
+Conditions:
+  Type            Status  Reason              Message
+  ----            ------  ------              -------
+  AbleToScale     True    ReadyForNewScale    recommended size matches current size
+  ScalingActive   True    ValidMetricFound    the HPA was able to successfully calculate a replica count from cpu resource utilization (percentage of request)
+  ScalingLimited  False   DesiredWithinRange  the desired count is within the acceptable range
+Events:
+  Type     Reason                        Age                  From                       Message
+  ----     ------                        ----                 ----                       -------
+  Normal   SuccessfulRescale             26m (x2 over 52m)    horizontal-pod-autoscaler  New size: 2; reason: cpu resource utilization (percentage of request) above target
+  Normal   SuccessfulRescale             21m (x2 over 46m)    horizontal-pod-autoscaler  New size: 1; reason: All metrics below target
+  Warning  FailedGetResourceMetric       7m57s (x9 over 28m)  horizontal-pod-autoscaler  failed to get cpu utilization: did not receive metrics for targeted pods (pods might be unready)
+  Warning  FailedComputeMetricsReplicas  7m57s (x9 over 28m)  horizontal-pod-autoscaler  invalid metrics (1 invalid out of 1), first error is: failed to get cpu resource metric value: failed to get cpu utilization: did not receive metrics for targeted pods (pods might be unready)
+
+=== ROLLINGUPDATE ===
+RollingUpdate | maxSurge=1 | maxUnavailable=0
+
+=== SERVICEACCOUNT ===
+fulfill-web-sa | automount=false
+
+=== PERMISOS RBAC ===
+no
+
+=== NETWORKPOLICIES ===
+Name:         flask-egress-restringido
+Namespace:    fulfill
+Created on:   2026-11-04 21:24:26 -0600 CST
+Labels:       <none>
+Annotations:  <none>
+Spec:
+  PodSelector:     app=fulfill-web
+  Not affecting ingress traffic
+  Allowing egress traffic:
+    To Port: 5432/TCP
+    To:
+      PodSelector: app=fulfill-postgres
+    ----------
+    To Port: 27017/TCP
+    To:
+      PodSelector: app=fulfill-mongo
+    ----------
+    To Port: 53/UDP
+    To Port: 53/TCP
+    To:
+      NamespaceSelector: kubernetes.io/metadata.name=kube-system
+      PodSelector: k8s-app=kube-dns
+  Policy Types: Egress
+
+
+Name:         flask-only-traefik
+Namespace:    fulfill
+Created on:   2026-11-04 21:15:48 -0600 CST
+Labels:       <none>
+Annotations:  <none>
+Spec:
+  PodSelector:     app=fulfill-web
+  Allowing ingress traffic:
+    To Port: 5000/TCP
+    From:
+      NamespaceSelector: kubernetes.io/metadata.name=traefik
+      PodSelector: app.kubernetes.io/name=traefik
+  Not affecting egress traffic
+  Policy Types: Ingress
+
+
+Name:         mongo-only-flask
+Namespace:    fulfill
+Created on:   2026-11-04 21:03:27 -0600 CST
+Labels:       <none>
+Annotations:  <none>
+Spec:
+  PodSelector:     app=fulfill-mongo
+  Allowing ingress traffic:
+    To Port: 27017/TCP
+    From:
+      PodSelector: app=fulfill-web
+  Not affecting egress traffic
+  Policy Types: Ingress
+
+
+Name:         postgres-only-flask
+Namespace:    fulfill
+Created on:   2026-11-04 20:47:51 -0600 CST
+Labels:       <none>
+Annotations:  <none>
+Spec:
+  PodSelector:     app=fulfill-postgres
+  Allowing ingress traffic:
+    To Port: 5432/TCP
+    From:
+      PodSelector: app=fulfill-web
+  Not affecting egress traffic
+  Policy Types: Ingress
