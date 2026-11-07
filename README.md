@@ -93,7 +93,7 @@ La separación completa entre desarrollo y producción y otras pruebas avanzadas
 
 ## Autoría
 
-Proyecto académico desarrollado por Miros.
+Proyecto académico desarrollado por Shelvy Miroslava Bucio Hurtado - 22120635.
 
 ## Versión
 
